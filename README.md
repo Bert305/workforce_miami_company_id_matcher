@@ -46,6 +46,24 @@ python main.py --input input.csv --reference reference.csv --output output.csv -
 python main.py --input companies_to_match.csv --reference company_reference.csv --output matched_companies.csv
 ```
 
+## ---------------------apprentices.py-----------------------------------------
+
+# Quick Documentation Instructions:
+# 1. Update CSV file name old, new and the output
+# 2. Update file path name making sure the match, old and new file name
+# 3. Must use terminal to run the file (files must match ALSO): python apprentices.py old_app_test.csv new_app_test.csv
+
+
+# Basic usage - FOR TERMINAL -- **USE THIS ONE**Params must also match files and path!!!!!
+python apprentices.py old_app.csv new_app.csv
+
+# With custom output filename
+python apprentices.py old_app.csv new_app.csv -o my_changes.csv
+
+# Using full paths
+python apprentices.py "C:\path\to\old.csv" "C:\path\to\new.csv"
+
+## ------------------------------------------------------------------------------
 ## License
 
 MIT License
