@@ -1,0 +1,24 @@
+# Requirements for workforce_miami_company_id_matcher
+# CSV data processing and analysis
+pandas>=1.3.0
+numpy>=1.20.0
+
+# Web scraping and HTTP requests (for main.py)
+requests>=2.25.0
+beautifulsoup4>=4.9.0
+
+# HTML parsing (often used with BeautifulSoup)
+lxml>=4.6.0
+
+# Excel file handling (if main.py works with .xlsx files)
+openpyxl>=3.0.0
+
+# URL parsing and web utilities
+urllib3>=1.26.0
+
+# Optional: for enhanced data visualization (if needed in future)
+# matplotlib>=3.3.0
+# seaborn>=0.11.0
+
+# Optional: for more robust CSV handling
+# chardet>=4.0.0  # character encoding detection
