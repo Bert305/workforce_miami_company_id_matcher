@@ -6,8 +6,8 @@ import os
 base_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Build absolute paths to the CSV files
-supabase_path = os.path.join(base_dir, "Supabase_name_id_export3.csv")
-scraped_jobs_path = os.path.join(base_dir, "7_17_2025_jobs_to_Python_QA.csv")
+supabase_path = os.path.join(base_dir, "Supabase_name_id_export3.csv") # company_id, name export from Supabase
+scraped_jobs_path = os.path.join(base_dir, "7_17_2025_jobs_to_Python_QA.csv") # scraped jobs data with company_name but no company_id
 
 supabase_companies_df = pd.read_csv(supabase_path, encoding="latin1")  # company_id, name
 scraped_jobs_df = pd.read_csv(scraped_jobs_path, encoding="latin1")  # includes company_name
