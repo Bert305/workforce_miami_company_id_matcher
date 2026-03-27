@@ -6,8 +6,8 @@ import os
 base_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Build absolute paths to the CSV files
-supabase_path = os.path.join(base_dir, "Supabase_name_id_export.csv")
-scraped_jobs_path = os.path.join(base_dir, "7-15-2025_jobs-to-SQL-200.csv")
+supabase_path = os.path.join(base_dir, "Supabase_name_id_export3.csv")
+scraped_jobs_path = os.path.join(base_dir, "7_17_2025_jobs_to_Python_QA.csv")
 
 supabase_companies_df = pd.read_csv(supabase_path, encoding="latin1")  # company_id, name
 scraped_jobs_df = pd.read_csv(scraped_jobs_path, encoding="latin1")  # includes company_name
@@ -36,7 +36,7 @@ if "company_id" in cols and "company_name" in cols:
     merged_df = merged_df[cols]
 
 # Export to new CSV
-output_path = os.path.join(base_dir, "SQL_Jobs_Ready_7_15_2025.csv")
+output_path = os.path.join(base_dir, "SQL_Jobs_Ready_7_17_2025!!!.csv")
 merged_df.to_csv(output_path, index=False)
 print(f"✅ Updated file saved to: {output_path}")
 
