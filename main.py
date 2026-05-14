@@ -1,13 +1,14 @@
 import pandas as pd
 import os
+from datetime import datetime, timezone
 
 # Load files
 # Get the directory of the current script
 base_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Build absolute paths to the CSV files
-supabase_path = os.path.join(base_dir, "Supabase_name_id_export_go10.csv")  # company_id, name export from Supabase
-scraped_path = os.path.join(base_dir, "5_12_2026_jobs_to_Python_p3.csv")  # jobs file
+supabase_path = os.path.join(base_dir, "Supabase_name_id_export_go.csv")  # company_id, name export from Supabase
+scraped_path = os.path.join(base_dir, "5_12_2026_jobs_to_Python_test.csv")  # jobs file
 industries_path = os.path.join(base_dir, "industries_rows.csv")  # id, name mapping for industries
 
 supabase_companies_df = pd.read_csv(supabase_path, encoding="latin1")  # company_id, name
@@ -69,6 +70,11 @@ merged_df["industry_id"] = merged_df["industry_id"].astype("Int64")
 # Drop the original industry string column and the lookup helper column
 merged_df.drop(columns=["industry", "industry_name_lookup"], inplace=True)
 
+# --- Stamp created_at / posted_at with current UTC time -----------------------
+run_timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S+00")
+merged_df["created_at"] = run_timestamp
+merged_df["posted_at"] = run_timestamp
+
 # --- Enforce target schema column order (post-migration) ----------------------
 schema_columns = [
     "title", "description", "company_name", "location", "application_url",
@@ -79,7 +85,7 @@ schema_columns = [
     "qualifications", "responsibilities", "verified", "is_featured",
     "applications_count", "keywords", "external_clicks",
 ]
-output_filename = "SQL_Jobs_Ready_5_12_2026_p3!!!.csv"
+output_filename = "SQL_Jobs_Ready_5_12_2026_test2!!!.csv"
 
 # Keep only schema columns that exist, then append any extras at the end so nothing is silently lost
 ordered = [c for c in schema_columns if c in merged_df.columns]

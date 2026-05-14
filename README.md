@@ -17,6 +17,22 @@ test2
 git clone https://github.com/Bert305/workforce_miami_company_id_matcher.git
 cd workforce_miami_company_id_matcher
 python -m venv .venv
+```
+
+Activate the virtual environment:
+
+- **Windows (PowerShell):**
+    ```powershell
+    .\.venv\Scripts\Activate.ps1
+    ```
+- **macOS / Linux (bash/zsh):**
+    ```bash
+    source .venv/bin/activate
+    ```
+
+Then install dependencies:
+
+```bash
 pip install -r requirements.txt
 ```
 
