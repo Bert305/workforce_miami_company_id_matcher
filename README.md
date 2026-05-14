@@ -11,6 +11,15 @@ test2
 - Outputs results to a new CSV file with matched IDs.
 - Configurable matching threshold.
 
+## Installation
+
+```bash
+git clone https://github.com/Bert305/workforce_miami_company_id_matcher.git
+cd workforce_miami_company_id_matcher
+python -m venv .venv
+pip install -r requirements.txt
+```
+
 ## Requirements
 
 - Python 3.7+
