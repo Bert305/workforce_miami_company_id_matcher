@@ -1,23 +1,40 @@
 import pandas as pd
 import os
+import sys
 from datetime import datetime, timezone
+
+# The status messages below use emoji; Python defaults stdout to cp1252 on Windows when
+# output is piped or redirected, which raises UnicodeEncodeError on them.
+sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 # Load files
 # Get the directory of the current script
 base_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Build absolute paths to the CSV files
-supabase_path = os.path.join(base_dir, "Supabase_name_id_export_go.csv")  # company_id, name export from Supabase
-scraped_path = os.path.join(base_dir, "5_12_2026_jobs_to_Python_test.csv")  # jobs file
+supabase_path = os.path.join(base_dir, "Supabase_name_id_export_go_11.csv")  # company_id, name export from Supabase
+scraped_path = os.path.join(base_dir, "8_10_2026_jobs_to_Python.csv")  # jobs file
 industries_path = os.path.join(base_dir, "industries_rows.csv")  # id, name mapping for industries
 
-supabase_companies_df = pd.read_csv(supabase_path, encoding="latin1")  # company_id, name
-scraped_df = pd.read_csv(scraped_path, encoding="latin1")
-industries_df = pd.read_csv(industries_path, encoding="latin1")  # id, name
+def read_csv_utf8(path):
+    """Read a CSV as UTF-8. Reading UTF-8 bytes as latin1/cp1252 turns '•' (E2 80 A2)
+    into 'â\x80¢' and '–' into 'â\x80"' — the mojibake shows up in the spreadsheet.
+    utf-8-sig also strips a leading BOM if the exporter added one. Only fall back to
+    cp1252 for genuinely legacy files that aren't valid UTF-8."""
+    try:
+        return pd.read_csv(path, encoding="utf-8-sig")
+    except UnicodeDecodeError:
+        print(f"⚠️  {os.path.basename(path)} is not valid UTF-8; falling back to cp1252")
+        return pd.read_csv(path, encoding="cp1252")
 
-# Normalize headers: strip whitespace and BOM artifacts that can sneak in via encoding mismatches
+
+supabase_companies_df = read_csv_utf8(supabase_path)  # company_id, name
+scraped_df = read_csv_utf8(scraped_path)
+industries_df = read_csv_utf8(industries_path)  # id, name
+
+# Normalize headers: strip surrounding whitespace (BOM is handled by utf-8-sig above)
 for df in (supabase_companies_df, scraped_df, industries_df):
-    df.columns = df.columns.str.strip().str.lstrip("﻿").str.lstrip("ï»¿")
+    df.columns = df.columns.str.strip()
 
 print(f"\n📋 Input file columns: {scraped_df.columns.tolist()}")
 
@@ -85,7 +102,7 @@ schema_columns = [
     "qualifications", "responsibilities", "verified", "is_featured",
     "applications_count", "keywords", "external_clicks",
 ]
-output_filename = "SQL_Jobs_Ready_5_12_2026_test2!!!.csv"
+output_filename = "SQL_Jobs_Ready_8_10_2026!!!.csv"
 
 # Keep only schema columns that exist, then append any extras at the end so nothing is silently lost
 ordered = [c for c in schema_columns if c in merged_df.columns]
@@ -96,7 +113,9 @@ merged_df = merged_df[ordered + extras]
 
 # Export to new CSV
 output_path = os.path.join(base_dir, output_filename)
-merged_df.to_csv(output_path, index=False)
+# utf-8-sig writes a BOM so Excel/Sheets detect UTF-8 instead of assuming cp1252,
+# which is what otherwise turns bullets and dashes into mojibake on open.
+merged_df.to_csv(output_path, index=False, encoding="utf-8-sig")
 print(f"✅ Updated file saved to: {output_path}")
 
 # Optional: Print first few matched results to terminal
