@@ -12,8 +12,8 @@ sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 base_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Build absolute paths to the CSV files
-supabase_path = os.path.join(base_dir, "Supabase_name_id_export_go_20.csv")  # company_id, name export from Supabase
-scraped_path = os.path.join(base_dir, "9_28_2026_jobs_to_Python.csv")  # jobs file
+supabase_path = os.path.join(base_dir, "Supabase_name_id_export_go_21.csv")  # company_id, name export from Supabase
+scraped_path = os.path.join(base_dir, "9_28_2026_jobs_to_Python_p2.csv")  # jobs file
 industries_path = os.path.join(base_dir, "industries_rows.csv")  # id, name mapping for industries
 
 def read_csv_utf8(path):
@@ -92,6 +92,7 @@ location_aliases = {
     "Miami Lakes, FL": "Miami, FL",
     "Miami-Fort Lauderdale Area": "Miami, FL",
     "Miami-Dade County, FL": "Miami, FL",
+    "Miami Shores, FL": "Miami, FL"
 }
 if "location" in merged_df.columns:
     stripped_locations = merged_df["location"].astype(str).str.strip()
@@ -114,7 +115,7 @@ schema_columns = [
     "qualifications", "responsibilities", "verified", "is_featured",
     "applications_count", "keywords", "external_clicks",
 ]
-output_filename = "SQL_Jobs_Ready_9_28_2026!!!.csv"
+output_filename = "SQL_Jobs_Ready_9_28_2026_p2!!!.csv"
 
 # Keep only schema columns that exist, then append any extras at the end so nothing is silently lost
 ordered = [c for c in schema_columns if c in merged_df.columns]
